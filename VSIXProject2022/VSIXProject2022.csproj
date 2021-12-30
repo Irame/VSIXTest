@@ -72,6 +72,7 @@
   <ItemGroup>
     <VSCTCompile Include="..\VSIXSharedResources\VSIXSharedProjectPackage.vsct">
       <Link>VSIXSharedProjectPackage.vsct</Link>
+      <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
   </ItemGroup>
   <ItemGroup>
