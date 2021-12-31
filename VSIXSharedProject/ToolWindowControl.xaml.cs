@@ -26,9 +26,13 @@ namespace VSIXSharedProject
         [SuppressMessage("StyleCop.CSharp.NamingRules", "SA1300:ElementMustBeginWithUpperCaseLetter", Justification = "Default event handler naming pattern")]
         private void button1_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show(
-                string.Format(System.Globalization.CultureInfo.CurrentUICulture, "Invoked '{0}'", this.ToString()),
-                "ToolWindow");
+#if VS2022
+            string version = "VS2022";
+#elif VS2019
+            string version = "VS2019";
+#endif
+
+            MessageBox.Show($"Build for: {version}");
         }
     }
 }
