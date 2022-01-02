@@ -30,6 +30,8 @@ namespace VSIXSharedProject
             string version = "VS2022";
 #elif VS2019
             string version = "VS2019";
+#elif VS2017
+            string version = "VS2017";
 #endif
 
             MessageBox.Show($"Build for: {version}");

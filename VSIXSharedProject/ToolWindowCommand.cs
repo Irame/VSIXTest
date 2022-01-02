@@ -86,13 +86,28 @@ namespace VSIXSharedProject
         /// <param name="e">The event args.</param>
         private void Execute(object sender, EventArgs e)
         {
-            this.package.JoinableTaskFactory.RunAsync(async delegate
+            void checkToolWindow(ToolWindowPane toolWindowPane)
             {
-                ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(ToolWindow), 0, true, this.package.DisposalToken);
-                if ((null == window) || (null == window.Frame))
+                if (null == toolWindowPane || null == toolWindowPane.Frame)
                 {
                     throw new NotSupportedException("Cannot create tool window");
                 }
+            }
+
+            this.package.JoinableTaskFactory.RunAsync(async delegate
+            {
+#if VS2017
+                await ThreadHelper.JoinableTaskFactory.SwitchToMainThreadAsync();
+
+                ToolWindowPane window = this.package.FindToolWindow(typeof(ToolWindow), 0, true);
+                checkToolWindow(window);
+
+                IVsWindowFrame windowFrame = (IVsWindowFrame)window.Frame;
+                Microsoft.VisualStudio.ErrorHandler.ThrowOnFailure(windowFrame.Show());
+#else
+                ToolWindowPane window = await this.package.ShowToolWindowAsync(typeof(ToolWindow), 0, true, this.package.DisposalToken);
+                checkToolWindow(window);
+#endif
             });
         }
     }
